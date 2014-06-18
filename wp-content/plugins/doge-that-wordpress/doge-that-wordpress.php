@@ -7,42 +7,47 @@
  * Description: Add a little doge touch
  */
 
-function doge_that_title($title){
+function dtw_titles($title){
     if(in_the_loop()){
         $random_nb = rand(1,3);
 
         switch($random_nb):
             case 1:
-                return getDogePng(). "Much " . $title;
+                return dtw_getDogePng(). "Much " . $title;
             case 2:
-                return getDogePng(). "Wow " . $title;
+                return dtw_getDogePng(). "Wow " . $title;
             case 3:
-                return getDogePng(). "So very " . $title;
+                return dtw_getDogePng(). "So very " . $title;
             default:
-                return "Doge " . $title . getDogePng();
+                return "Doge " . $title . dtw_getDogePng();
         endswitch;
     }
     return $title;
 }
 
-function getDogePng(){
+function dtw_getDogePng(){
     return '<img alt="doge" width="40" height="40" src="'. plugins_url() .'/doge-that-wordpress/img/doge.png" />';
 }
 
-add_filter('the_title','doge_that_title');
+add_filter('the_title','dtw_titles');
 
-function doge_that_footer(){
-    echo getDogePng();
+function dtw_footer(){
+    echo dtw_getDogePng();
 }
 
-add_action('wp_footer','doge_that_footer');
+add_action('wp_footer','dtw_footer');
 
-function doge_admin_page(){
-    echo '<h2>Doge</h2>';
+function dtw_admin_page(){
+    include('admin/doge-that-wordpress-admin.php');
 }
 
-function add_doge_options(){
-    add_options_page(__('Doge Settings','doge'), __('Doge Settings','doge'), 1, "doge-settings", doge_admin_page());
+function dtw_admin_menu(){
+    $page_title = 'Doge That Wordpress - Settings';
+    $menu_title = 'Doge That Wordpress';
+    $capability = 'manage_options';
+    $menu_slug = 'doge-that-wordpress';
+    $function = 'dtw_admin_page';
+    add_options_page($page_title, $menu_title, $capability, $menu_slug, $function);
 }
 
-add_action('admin_menu','add_doge_options');
+add_action('admin_menu','dtw_admin_menu');
